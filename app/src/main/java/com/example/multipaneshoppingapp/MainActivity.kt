@@ -2,6 +2,7 @@ package com.example.multipaneshoppingapp
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -14,12 +15,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import kotlinx.android.parcel.Parcelize
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +35,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-data class Product(val id: Int, val name: String, val description: String, val price: String)
+@Parcelize
+ class Product(val id: Int, val name: String, val description: String, val price: String):Parcelable
 
 val sampleProducts = listOf(
     Product(1, "Laptop", "A laptop is a portable personal computer designed for mobility and versatility.", "$1000"),
@@ -104,7 +108,7 @@ fun PlaceholderMessage(modifier: Modifier = Modifier) {
 
 @Composable
 fun ShoppingApp() {
-    var selectedProduct by remember { mutableStateOf<Product?>(null) }
+    var selectedProduct by rememberSaveable  { mutableStateOf<Product?>(null) }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
